@@ -167,7 +167,24 @@ app.Map("/ws-test", async context =>
     }
 });
 
-
+app.Use(async (context, next) =>
+{
+    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        await next.Invoke();
+    }
+    catch (WebSocketException wsEx)
+    {
+        logger.LogError(wsEx, "WebSocketException przechwycony globalnie");
+        context.Response.StatusCode = 500;
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Nieoczekiwany błąd");
+        context.Response.StatusCode = 500;
+    }
+});
 
 app.MapGet("/ships", () =>
     {
