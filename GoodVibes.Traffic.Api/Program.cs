@@ -6,9 +6,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy
+            .AllowAnyOrigin()   // Pozwala na dowolne źródło (domena, port, itp.)
+            .AllowAnyMethod()   // Pozwala na dowolne metody HTTP (GET, POST, PUT, DELETE, ...)
+            .AllowAnyHeader();  // Pozwala na dowolne nagłówki
+    });
+});
 var app = builder.Build();
-
+app.UseCors("AllowAll");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
