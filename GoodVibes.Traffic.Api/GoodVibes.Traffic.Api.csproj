@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\GoodVibes.Traffic.Domain\GoodVibes.Traffic.Domain.csproj" />
+        <ProjectReference Include="..\GoodVibes.Traffic.Services\GoodVibes.Traffic.Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>

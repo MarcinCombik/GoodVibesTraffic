@@ -1,12 +1,17 @@
 using System.Net.WebSockets;
 using System.Text;
 using GoodVibes.Traffic.Api.ws;
-using GoodVibes.Traffic.Api.Ws;
 using GoodVibes.Traffic.Domain;
 using Newtonsoft.Json;
+
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Konfiguracja API key w appsettings.json
+// "AISStream": "TWÓJ_API_KEY"
+var apiKey = builder.Configuration.GetValue<string>("AISStream");
+
 builder.Services.AddSingleton<WebSocketConnectionManager>();
 builder.Services.AddSingleton<WebSocketHandler>();
 builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
