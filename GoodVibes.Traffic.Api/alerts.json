@@ -1,27 +1,27 @@
 [
   {
     "ALERT_TYPE" : "WARNING",
-    "SHIP_ID": "665599",
+    "SHIP_IDS": ["665599"],
     "REASON": "a cutter floating close to underwater cables"
   },
   {
     "ALERT_TYPE" : "DANGER",
-    "SHIP_ID": "5329028",
+    "SHIP_IDS": ["3647286", "2460691"],
     "REASON": "two tankers close to each other"
   },
   {
     "ALERT_TYPE" : "WARNING",
-    "SHIP_ID": "728090",
+    "SHIP_IDS": ["728090"],
     "REASON": "Illegal fishing"
   },
   {
     "ALERT_TYPE" : "WARNING",
-    "SHIP_ID": "4876747",
+    "SHIP_IDS": ["4876747"],
     "REASON": "GPS signal lost"
   },
   {
     "ALERT_TYPE" : "DANGER",
-    "SHIP_ID": "TnpBMU9Ea3lOekExT0RreU56QTFPQT09LVZSNW9ibzhVbHMxZWFjcHhZVGZtc0E9PQ==",
+    "SHIP_IDS": ["TnpBMU9Ea3lOekExT0RreU56QTFPQT09LVZSNW9ibzhVbHMxZWFjcHhZVGZtc0E9PQ=="],
     "REASON" : "Entering territorial waters"
   }
 ]

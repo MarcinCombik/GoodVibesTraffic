@@ -3,6 +3,7 @@ using System.Text;
 using GoodVibes.Traffic.Api.ws;
 using GoodVibes.Traffic.Application;
 using GoodVibes.Traffic.Domain;
+using Microsoft.AspNetCore.Http.HttpResults;
 using GoodVibes.Traffic.Infrastructure;
 using Newtonsoft.Json;
 
@@ -207,6 +208,8 @@ app.MapGet("/alerts", () =>
         return ships;
     })
     .WithName("GetAlerts");
+
+app.MapPost("/checkPositions", (List<ShipPosition> positions) => Results.Ok((object?)positions));
 
 app.MapGet("/", () => "WebSocket server is running. Connect to /ws");
 
