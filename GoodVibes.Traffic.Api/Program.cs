@@ -36,14 +36,17 @@ var manager = app.Services.GetRequiredService<WebSocketConnectionManager>();
 // 1️⃣ Local WS endpoint for Angular / Node.js
 app.Map("/ws", async (HttpContext context) =>
 {
+    Console.WriteLine($"Web socket has been started");
     if (!context.WebSockets.IsWebSocketRequest)
     {
         context.Response.StatusCode = 400;
         return;
     }
-
+    Console.WriteLine($"Accept web socket");
     var socket = await context.WebSockets.AcceptWebSocketAsync();
+    Console.WriteLine($"ws id");
     var id = manager.AddSocket(socket);
+    Console.WriteLine(id);    
     Console.WriteLine($"Client connected: {id} | Total clients: {manager.GetAllIds().Count()}");
 
     await manager.SendToAsync(id, "{ \"msg\": \"Connected to local WS bridge\" }");
@@ -64,6 +67,7 @@ app.Map("/ws", async (HttpContext context) =>
 // 2️⃣ Connect to external AISStream WS
 _ = Task.Run(async () =>
 {
+    Console.WriteLine("Start logic");
     using var clientWs = new ClientWebSocket();
     await clientWs.ConnectAsync(new Uri("wss://stream.aisstream.io/v0/stream"), CancellationToken.None);
     
