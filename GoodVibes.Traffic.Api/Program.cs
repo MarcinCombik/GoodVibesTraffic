@@ -65,7 +65,7 @@ _ = Task.Run(async () =>
 {
     using var clientWs = new ClientWebSocket();
     await clientWs.ConnectAsync(new Uri("wss://stream.aisstream.io/v0/stream"), CancellationToken.None);
-
+    
     // Wyślij API key + konfigurację
     var initMsg = $@"{{
         ""Apikey"": ""{apiKey}"",
@@ -87,7 +87,7 @@ _ = Task.Run(async () =>
         var result = await clientWs.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
         string msg;
-
+        await manager.BroadcastAsync((apiKey));
         if (result.MessageType == WebSocketMessageType.Text)
         {
             msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
