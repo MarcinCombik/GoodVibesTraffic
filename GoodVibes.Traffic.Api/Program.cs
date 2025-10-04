@@ -36,6 +36,9 @@ var manager = app.Services.GetRequiredService<WebSocketConnectionManager>();
 // 1️⃣ Local WS endpoint for Angular / Node.js
 app.Map("/ws", async (HttpContext context) =>
 {
+    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+
+    
     Console.WriteLine($"Web socket has been started");
     if (!context.WebSockets.IsWebSocketRequest)
     {
@@ -44,8 +47,14 @@ app.Map("/ws", async (HttpContext context) =>
     }
     Console.WriteLine($"Accept web socket");
     var socket = await context.WebSockets.AcceptWebSocketAsync();
+    logger.LogInformation("New WebScocket connection {Path}", context.Request.Path);
+
     Console.WriteLine($"ws id");
     var id = manager.AddSocket(socket);
+    logger.LogInformation(id);
+
+    logger.LogInformation($"Client connected: {id} | Total clients: {manager.GetAllIds().Count()}");
+
     Console.WriteLine(id);    
     Console.WriteLine($"Client connected: {id} | Total clients: {manager.GetAllIds().Count()}");
 
@@ -58,7 +67,7 @@ app.Map("/ws", async (HttpContext context) =>
         if (result.MessageType == WebSocketMessageType.Close)
         {
             manager.RemoveSocket(id);
-            Console.WriteLine($"Client disconnected: {id}");
+            logger.LogInformation("client");
             break;
         }
     }
