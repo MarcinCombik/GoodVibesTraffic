@@ -4,11 +4,13 @@ using GoodVibes.Traffic.Api.ws;
 using GoodVibes.Traffic.Api.Ws;
 using GoodVibes.Traffic.Domain;
 using Newtonsoft.Json;
-
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<WebSocketConnectionManager>();
 builder.Services.AddSingleton<WebSocketHandler>();
+builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
