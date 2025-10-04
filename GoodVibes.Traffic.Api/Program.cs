@@ -87,7 +87,7 @@ _ = Task.Run(async () =>
         var result = await clientWs.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
         string msg;
-        await manager.BroadcastAsync((apiKey));
+        await manager.BroadcastAsync((@$"logowanie apikey: {apiKey}"));
         if (result.MessageType == WebSocketMessageType.Text)
         {
             msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
