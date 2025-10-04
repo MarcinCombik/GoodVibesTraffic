@@ -29,7 +29,10 @@ app.UseCors("AllowAll");
 app.UseWebSockets(new WebSocketOptions
 {
     KeepAliveInterval = TimeSpan.FromSeconds(30),
+    AllowedOrigins = { "https://good-vibes-traffic.netlify.app" }
 });
+
+
 
 var manager = app.Services.GetRequiredService<WebSocketConnectionManager>();
 
