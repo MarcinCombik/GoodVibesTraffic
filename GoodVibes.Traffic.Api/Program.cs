@@ -1,6 +1,7 @@
 using System.Net.WebSockets;
 using System.Text;
 using GoodVibes.Traffic.Api.ws;
+using GoodVibes.Traffic.Domain;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -116,6 +117,13 @@ _ = Task.Run(async () =>
     }
 
 });
+
+app.MapGet("/ships", () =>
+    {
+        var ships = JsonConvert.DeserializeObject<IEnumerable<ShipPosition>>(File.ReadAllText("ships.json"));
+        return ships;
+    })
+    .WithName("GetShips");
 
 app.MapGet("/", () => "WebSocket server is running. Connect to /ws");
 
