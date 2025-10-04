@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddOpenAiClient(builder.Configuration.GetValue<string>("OpenAI:ApiKey")!, builder.Configuration.GetValue<string>("OpenAI:OrganizationId")!);
+builder.Services.AddOpenAiClient(builder.Configuration.GetValue<string>("OpenAIApiKey")!, builder.Configuration.GetValue<string>("OpenAIOrganizationId")!);
 builder.Services.AddScoped<IOpenAiApiClient, OpenAiApiClient>();
 
 var app = builder.Build();
