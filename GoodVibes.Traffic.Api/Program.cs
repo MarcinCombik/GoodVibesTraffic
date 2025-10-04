@@ -2,6 +2,7 @@ using System.Net.WebSockets;
 using System.Text;
 using GoodVibes.Traffic.Api.ws;
 using GoodVibes.Traffic.Domain;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -202,6 +203,8 @@ app.MapGet("/alerts", () =>
         return ships;
     })
     .WithName("GetAlerts");
+
+app.MapPost("/checkPositions", (List<ShipPosition> positions) => Results.Ok((object?)positions));
 
 app.MapGet("/", () => "WebSocket server is running. Connect to /ws");
 
