@@ -1,3 +1,5 @@
+using System.Net.WebSockets;
+using System.Text;
 using GoodVibes.Traffic.Api.ws;
 using GoodVibes.Traffic.Api.Ws;
 using GoodVibes.Traffic.Domain;
@@ -29,23 +31,61 @@ app.UseWebSockets(new WebSocketOptions
     // AllowedOrigins, ReceiveBufferSize etc. możesz dopasować
 });
 
-app.Map("/ws", async (HttpContext http, WebSocketConnectionManager manager, WebSocketHandler handler) =>
+var manager = app.Services.GetRequiredService<WebSocketConnectionManager>();
+
+// 1️⃣ Local WS endpoint for Angular
+app.Map("/ws", async (HttpContext context) =>
 {
-    if (!http.WebSockets.IsWebSocketRequest)
+    if (!context.WebSockets.IsWebSocketRequest)
     {
-        http.Response.StatusCode = 400;
+        context.Response.StatusCode = 400;
         return;
     }
 
-    var socket = await http.WebSockets.AcceptWebSocketAsync();
-    var connectionId = manager.AddSocket(socket);
-    try
+    var socket = await context.WebSockets.AcceptWebSocketAsync();
+    var id = manager.AddSocket(socket);
+
+    // optional: send welcome
+    await manager.SendToAsync(id, "{ \"msg\": \"Connected to local WS bridge\" }");
+
+    // keep socket open (could use WebSocketHandler for logic)
+    var buffer = new byte[1024 * 4];
+    while (socket.State == WebSocketState.Open)
     {
-        await handler.ReceiveAsync(connectionId, socket);
+        var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        if (result.MessageType == WebSocketMessageType.Close)
+        {
+            manager.RemoveSocket(id);
+            break;
+        }
     }
-    finally
+});
+
+// 2️⃣ Connect to external AISStream WS
+_ = Task.Run(async () =>
+{
+    using var clientWs = new ClientWebSocket();
+    await clientWs.ConnectAsync(new Uri("wss://stream.aisstream.io/v0/stream"), CancellationToken.None);
+    var apikey = builder.Configuration.GetValue<string>("AISStream");
+    // send API key + initial message
+    var initMsg = $@"{{
+    ""Apikey"": ""{apikey}"",
+    ""BoundingBoxes"": [[[53.0, 9.5], [66.0, 30.0]]],
+    ""FilterMessageTypes"": [""PositionReport"", ""StaticDataReport""]
+}}";
+    await clientWs.SendAsync(Encoding.UTF8.GetBytes(initMsg), WebSocketMessageType.Text, true, CancellationToken.None);
+
+    var buffer = new byte[8192];
+    while (clientWs.State == WebSocketState.Open)
     {
-        manager.RemoveSocket(connectionId);
+        var result = await clientWs.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        if (result.MessageType == WebSocketMessageType.Text)
+        {
+            var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
+            // broadcast to all connected local clients
+            await manager.BroadcastAsync(msg);
+            Console.WriteLine("📡 AIS message broadcasted");
+        }
     }
 });
 
