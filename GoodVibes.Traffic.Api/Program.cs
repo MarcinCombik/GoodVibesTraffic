@@ -129,6 +129,13 @@ app.MapGet("/ships", () =>
     })
     .WithName("GetShips");
 
+app.MapGet("/alerts", () =>
+    {
+        var ships = JsonConvert.DeserializeObject<IEnumerable<Alert>>(File.ReadAllText("alerts.json"));
+        return ships;
+    })
+    .WithName("GetAlerts");
+
 app.MapGet("/", () => "WebSocket server is running. Connect to /ws");
 
 app.Run();

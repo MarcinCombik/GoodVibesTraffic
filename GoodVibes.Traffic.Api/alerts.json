@@ -1,0 +1,52 @@
+[
+  {
+    "LAT": "34.194519",
+    "LON": "132.26427",
+    "ALERT_TYPE" : "WARNING"
+  },
+  {
+    "LAT": "1.3326833",
+    "LON": "104.34998",
+    "ALERT_TYPE" : "WARNING"
+  },
+  {
+    "LAT": "10.5015",
+    "LON": "124.09722",
+    "ALERT_TYPE" : "DANGER"
+  },
+  {
+    "LAT": "59.19244",
+    "LON": "10.949587",
+    "ALERT_TYPE" : "WARNING"
+  },
+  {
+    "LAT": "29.128361",
+    "LON": "159.11836",
+    "ALERT_TYPE" : "WARNING"
+  },
+  {
+    "LAT": "8.0966663",
+    "LON": "109.09834",
+    "ALERT_TYPE" : "WARNING"
+  },
+  {
+    "LAT": "4.0450001",
+    "LON": "118.85",
+    "ALERT_TYPE" : "WARNING"
+  },
+  {
+    "LAT": "19.025",
+    "LON": "131.11333",
+    "ALERT_TYPE" : "DANGER"
+  },
+  {
+    "LAT": "34.906086",
+    "LON": "136.71307",
+    "ALERT_TYPE" : "DANGER"
+  },
+  {
+    "LAT": "9.1299372",
+    "LON": "120.56503",
+    "ALERT_TYPE" : "DANGER"
+  }
+]
