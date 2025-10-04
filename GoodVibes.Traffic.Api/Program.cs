@@ -131,6 +131,44 @@ _ = Task.Run(async () =>
 
 });
 
+app.Map("/ws-test", async context =>
+{
+    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+
+    if (context.WebSockets.IsWebSocketRequest)
+    {
+        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        logger.LogInformation("Nowe połączenie WebSocket na {Path}", context.Request.Path);
+
+        try
+        {
+            var buffer = new byte[1024 * 4];
+            WebSocketReceiveResult result;
+
+            do
+            {
+                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), context.RequestAborted);
+                var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                logger.LogInformation("Odebrano wiadomość: {Message}", message);
+            }
+            while (!result.CloseStatus.HasValue);
+
+            await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, context.RequestAborted);
+            logger.LogInformation("Połączenie WebSocket zamknięte: {Reason}", result.CloseStatusDescription);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Błąd podczas obsługi WebSocket");
+        }
+    }
+    else
+    {
+        context.Response.StatusCode = 400;
+    }
+});
+
+
+
 app.MapGet("/ships", () =>
     {
         var ships = JsonConvert.DeserializeObject<IEnumerable<ShipPosition>>(File.ReadAllText("ships.json"));
