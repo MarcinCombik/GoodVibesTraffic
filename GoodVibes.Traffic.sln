@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibes.Traffic.Api", "GoodVibes.Traffic.Api\GoodVibes.Traffic.Api.csproj", "{A28BA903-5676-441B-9ACF-721765ADE729}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibes.Traffic.Services", "GoodVibes.Traffic.Services\GoodVibes.Traffic.Services.csproj", "{4C8835B8-E133-4232-A5E4-75D2CE4A5134}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A28BA903-5676-441B-9ACF-721765ADE729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A28BA903-5676-441B-9ACF-721765ADE729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A28BA903-5676-441B-9ACF-721765ADE729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A28BA903-5676-441B-9ACF-721765ADE729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C8835B8-E133-4232-A5E4-75D2CE4A5134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C8835B8-E133-4232-A5E4-75D2CE4A5134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C8835B8-E133-4232-A5E4-75D2CE4A5134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C8835B8-E133-4232-A5E4-75D2CE4A5134}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
