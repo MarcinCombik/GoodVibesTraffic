@@ -5,7 +5,7 @@
     "REASON": "a cutter floating close to underwater cables"
   },
   {
-    "ALERT_TYPE" : "DABGER",
+    "ALERT_TYPE" : "DANGER",
     "SHIP_ID": "5329028",
     "REASON": "two tankers close to each other"
   },
