@@ -16,12 +16,16 @@
 
     <ItemGroup>
         <ProjectReference Include="..\GoodVibes.Traffic.Domain\GoodVibes.Traffic.Domain.csproj" />
+        <ProjectReference Include="..\GoodVibes.Traffic.Infrastructure\GoodVibes.Traffic.Infrastructure.csproj" />
         <ProjectReference Include="..\GoodVibes.Traffic.Services\GoodVibes.Traffic.Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <Content Update="ships.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="ships-analitic.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 

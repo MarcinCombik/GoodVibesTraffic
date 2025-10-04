@@ -1,7 +1,9 @@
 using System.Net.WebSockets;
 using System.Text;
 using GoodVibes.Traffic.Api.ws;
+using GoodVibes.Traffic.Application;
 using GoodVibes.Traffic.Domain;
+using GoodVibes.Traffic.Infrastructure;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,9 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+builder.Services.AddOpenAiClient(builder.Configuration.GetValue<string>("OpenAI:ApiKey")!, builder.Configuration.GetValue<string>("OpenAI:OrganizationId")!);
+builder.Services.AddScoped<IOpenAiApiClient, OpenAiApiClient>();
 
 var app = builder.Build();
 app.UseCors("AllowAll");
@@ -205,4 +210,42 @@ app.MapGet("/alerts", () =>
 
 app.MapGet("/", () => "WebSocket server is running. Connect to /ws");
 
+app.MapPost("/OpenAiApiRequest/Alerts", async (IOpenAiApiClient client) =>
+{
+    var alerts = "";
+
+    string fileContent = File.ReadAllText("ships-analitic.json");
+
+    int chunkSize = 100000;
+    int totalLength = fileContent.Length;
+    
+
+    // var fileId = await client.UploadFile(jsonString);
+
+    for (int i = 0; i < totalLength; i += chunkSize)
+    {
+        string chunk = fileContent.Substring(i, Math.Min(chunkSize, totalLength - i));
+
+        OpenAiRequest request = new($@"
+                                    Jesteś systemem monitorującym sytuacje morskie i zwracasz odpowiedzi wyłącznie w formacie JSON.
+                                    Struktura JSON musi wyglądać tak:
+                                    {{
+                                        ""ALERT_TYPE"": ""<TYP_ALERTU: WARNING / DANGER >"",
+                                        ""SHIP_ID"": ""<ID_STATKU: string>"",
+                                        ""REASON"": ""<OPIS_PRZYCZYNY_ALERTU>""
+                                    }}
+                                    Dane do analizy to: ""{chunk}""""
+                                    ");
+        var result = await client.GetResponse<OpenAiResponse>(request.Prompt);
+        alerts += result;
+    }
+
+    // var alerts = JsonConvert.DeserializeObject<Alert>(finalSummary);
+
+
+    return alerts;
+});
+
 app.Run();
+
+
