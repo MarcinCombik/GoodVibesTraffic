@@ -219,7 +219,7 @@ app.MapPost("/OpenAiApiRequest/Alerts", async (IOpenAiApiClient client) =>
 
     string fileContent = File.ReadAllText("ships-analitic.json");
 
-    int chunkSize = 400000;
+    int chunkSize = 300000;
     int totalLength = fileContent.Length;
     
 
