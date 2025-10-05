@@ -215,22 +215,22 @@ app.MapGet("/", () => "WebSocket server is running. Connect to /ws");
 
 app.MapPost("/OpenAiApiRequest/Alerts", async (IOpenAiApiClient client) =>
 {
-    var alerts = "";
+    var alerts = "[";
 
     string fileContent = File.ReadAllText("ships-analitic.json");
 
-    int chunkSize = 100000;
+    int chunkSize = 400000;
     int totalLength = fileContent.Length;
     
 
     // var fileId = await client.UploadFile(jsonString);
 
-    // for (int i = 0; i < totalLength; i += chunkSize)
-    // {
-        // string chunk = fileContent.Substring(i, Math.Min(chunkSize, totalLength - i));
+    for (int i = 0; i < totalLength; i += chunkSize)
+    {
+        string chunk = fileContent.Substring(i, Math.Min(chunkSize, totalLength - i));
 
         OpenAiRequest request = new($@"
-                                    You are a system that monitors maritime situations and you must return responses exclusively in JSON format.
+                                    You are a system that monitors maritime situations and you must return responses exclusively in JSON format but without [ ].
                                     The JSON structure must look like this:
                                     {{
                                         ""ALERT_TYPE"": ""<TYP_ALERTU: WARNING / DANGER >"",
@@ -239,14 +239,20 @@ app.MapPost("/OpenAiApiRequest/Alerts", async (IOpenAiApiClient client) =>
                                     }} separated by commas.
                                     Gnerate short reason.
                                     Genereate at least five alerts.
-                                    The data to analyze is: ""{fileContent}""""
+                                    Set everything related to speed as alert type warning.
+                                    The data to analyze is: ""{chunk}""""
                                     ");
         var result = await client.GetResponse<OpenAiResponse>(request.Prompt);
-        alerts += result;
-    // }
+        if (i > 0)
+        {
+            alerts += ",";
+        }
+
+        alerts += result ;
+    }
 
     // var alerts = JsonConvert.DeserializeObject<Alert>(finalSummary);
-    alerts += "";
+    alerts += "]";
 
     return alerts;
 });
