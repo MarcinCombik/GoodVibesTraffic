@@ -239,7 +239,7 @@ app.MapPost("/OpenAiApiRequest/Alerts", async (IOpenAiApiClient client) =>
                                     }} separated by commas.
                                     Gnerate short reason.
                                     Genereate at least five alerts.
-                                    Set everything related to speed as alert type warning.
+                                    Set ALERT_TYPE as WARNING when reason is contains speed.
                                     The data to analyze is: ""{chunk}""""
                                     ");
         var result = await client.GetResponse<OpenAiResponse>(request.Prompt);
