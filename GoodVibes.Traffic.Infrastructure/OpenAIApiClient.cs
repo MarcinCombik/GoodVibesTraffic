@@ -16,7 +16,7 @@ public class OpenAiApiClient(IHttpClientFactory httpClientFactory, ILogger<OpenA
 
         var payload = new
         {
-            model = "gpt-5",
+            model = "gpt-5-nano",
             messages = new[]
             {
                 new { role = "user", content = prompt },

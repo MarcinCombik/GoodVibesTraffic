@@ -225,26 +225,28 @@ app.MapPost("/OpenAiApiRequest/Alerts", async (IOpenAiApiClient client) =>
 
     // var fileId = await client.UploadFile(jsonString);
 
-    for (int i = 0; i < totalLength; i += chunkSize)
-    {
-        string chunk = fileContent.Substring(i, Math.Min(chunkSize, totalLength - i));
+    // for (int i = 0; i < totalLength; i += chunkSize)
+    // {
+        // string chunk = fileContent.Substring(i, Math.Min(chunkSize, totalLength - i));
 
         OpenAiRequest request = new($@"
-                                    Jesteś systemem monitorującym sytuacje morskie i zwracasz odpowiedzi wyłącznie w formacie JSON.
-                                    Struktura JSON musi wyglądać tak:
+                                    You are a system that monitors maritime situations and you must return responses exclusively in JSON format.
+                                    The JSON structure must look like this:
                                     {{
                                         ""ALERT_TYPE"": ""<TYP_ALERTU: WARNING / DANGER >"",
-                                        ""SHIP_ID"": ""<ID_STATKU: string>"",
-                                        ""REASON"": ""<OPIS_PRZYCZYNY_ALERTU>""
-                                    }}
-                                    Dane do analizy to: ""{chunk}""""
+                                        ""SHIP_ID"": ""<ID_STATKU"",
+                                        ""REASON"": ""<DESCRIPTION>""
+                                    }} separated by commas.
+                                    Gnerate short reason.
+                                    Genereate at least five alerts.
+                                    The data to analyze is: ""{fileContent}""""
                                     ");
         var result = await client.GetResponse<OpenAiResponse>(request.Prompt);
         alerts += result;
-    }
+    // }
 
     // var alerts = JsonConvert.DeserializeObject<Alert>(finalSummary);
-
+    alerts += "";
 
     return alerts;
 });
