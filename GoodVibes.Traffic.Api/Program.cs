@@ -197,7 +197,7 @@ app.Use(async (context, next) =>
 
 app.MapGet("/ships", () =>
     {
-        var ships = JsonConvert.DeserializeObject<IEnumerable<ShipPosition>>(File.ReadAllText("ships.json"));
+        var ships = JsonConvert.DeserializeObject<IEnumerable<ShipPosition>>(File.ReadAllText("ships-demo.json"));
         return ships;
     })
     .WithName("GetShips");
