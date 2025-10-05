@@ -235,10 +235,12 @@ app.MapPost("/OpenAiApiRequest/Alerts", async (IOpenAiApiClient client) =>
                                     {{
                                         ""ALERT_TYPE"": ""<TYP_ALERTU: WARNING / DANGER >"",
                                         ""SHIP_ID"": ""<ID_STATKU"",
-                                        ""REASON"": ""<DESCRIPTION>""
+                                        ""REASON"": ""<DESCRIPTION>"",
+                                        ""POSITION"" : ""POSITION"",
                                     }} separated by commas.
-                                    Gnerate short reason.
-                                    Genereate at least five alerts.
+                                    Change position coordinates to country name.
+                                    Gnerate short reason description.
+                                    Genereate at least five alerts, but it's must be one DANGER at least.
                                     Set ALERT_TYPE as WARNING when reason is contains speed.
                                     The data to analyze is: ""{chunk}""""
                                     ");
